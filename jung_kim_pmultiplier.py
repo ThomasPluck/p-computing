@@ -33,8 +33,12 @@ class JK_Multiplier:
         X = self._bin_to_int(self.X)
         Y = self._bin_to_int(self.Y)
     
-        self.I = self.const_1 * (self.N - X * Y) * Y
-        self.I += (2 * self.X - 1 ) * self.const_2 * Y ** 2
+        if self.is_X_flag:
+            self.I = self.const_1 * (self.N - X * Y) * Y
+            self.I += (2 * self.X - 1 ) * self.const_2 * Y ** 2
+        else:
+            self.I = self.const_1 * (self.N - Y * X) * X
+            self.I += (2 * self.Y - 1 ) * self.const_2 * X ** 2
 
     def _sigmoid(x):
 
