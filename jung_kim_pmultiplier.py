@@ -55,7 +55,7 @@ class JK_Multiplier:
         self.Y = np.random.choice([0.0,1.0], size=self.n//2-1)
 
         #  Activation
-        self.I = np.zeros(n//2-1, dtype=float)
+        self.I = np.zeros(n//2-1, dtype=np.float)
 
         # Factorization target
         self.N = N
@@ -75,9 +75,19 @@ class JK_Multiplier:
         return int(''.join(map(str, X.astype(int)[::-1]))+"1", 2)
     
     def _int_to_bin(self, X):
+
         # From int to binary string (little endian)
-        binary_str = bin(X)[:-1][2:]  # We start from index 2 to skip the '0b' prefix and remove the last character
-        binary_array = np.array([int(bit) for bit in binary_str][::-1])
+
+        if X <= 1:
+            # If X is 0, return a string of length 1
+            binary_str = '1'
+
+        else:
+            # We start from index 2 to skip the '0b' prefix and remove the last character
+            binary_str = bin(X)[:-1][2:]
+
+        # Convert the string to a numpy array and reverse it
+        binary_array = np.array([int(bit) for bit in binary_str][::-1],dtype=np.float)
         # Pad the array with zeros to make its length self.n//2 - 1
         padded_array = np.pad(binary_array, (0, self.n//2 - 1 - len(binary_array)), 'constant')
         return padded_array
@@ -100,14 +110,14 @@ class JK_Multiplier:
 
 
     def _sigmoid(self,x):
-
-        return 1.0/(1+np.exp(-x))
+        x = np.array(x, dtype=np.float)
+        return 1.0/(1+np.exp(-1.0 * x))
 
     def sample_distribution(self):
 
         """Sample from the distribution"""
 
-        out = (np.random.uniform(0,1,self.n//2) < self._sigmoid(self.I)).astype(float)
+        out = (np.random.uniform(0,1,self.n//2-1) < self._sigmoid(self.I)).astype(np.float)
 
         # Update X or Y
         if self.is_X_flag:
@@ -153,10 +163,13 @@ class JK_Multiplier:
 
     def test(self):
 
+        X = self._bin_to_int(self.X)
+        Y = self._bin_to_int(self.Y)
+
         # Check if the current X and Y are factors of N
-        if self.N % self._bin_to_int(self.X) == 0:
+        if self.N % X == 0 and X > 1:
             return True
-        elif self.N % self._bin_to_int(self.Y) == 0:
+        elif self.N % Y == 0 and Y > 1:
             return True
         else:
             return False
@@ -167,11 +180,12 @@ class JK_Multiplier:
         self.count += 1
         self.count %= 8
 
+        # Check if we have found the factors
+        if self.test():
+            return True
+        
         # Compute vanilla I_k
         self.compute_activation()
-
-        if self.test():
-            return
         
         # Probabilistic Annealing
         if not self.is_X_flag:
@@ -194,3 +208,5 @@ class JK_Multiplier:
         self.sieve()
         
         self.is_X_flag = not self.is_X_flag
+
+        return False
