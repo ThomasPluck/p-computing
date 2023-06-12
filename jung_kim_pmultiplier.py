@@ -195,11 +195,11 @@ class JK_Multiplier:
 
             if self.panneal_flag:
 
-                self.I *= 2.0 ** 4
+                self.I *= 2.0 ** -4
 
             else:
 
-                self.I *= 2.0 ** -1
+                self.I *= 2.0 ** 1
 
             self.panneal_flag = False
 
