@@ -1,3 +1,19 @@
+module gate_fusion(
+    input [7:0] in
+    output [3:0] out
+);
+
+    // Split the input into 2 sections, A,B
+    wire [3:0] A = in[0:3];
+    wire [3:0] B = in[4:7];
+
+    // Add the two sections together
+    always @(*) begin
+        out = (A + B) > 15 ? 15 : (A + B) < 0 ? 0 : (A + B);
+    end
+
+endmodule
+
 module COPY_gate(
     input [1:0] in
     output [7:0] out
@@ -22,7 +38,7 @@ endmodule
 module NOT_gate(
     input [1:0] in
     output [7:0] out
-)
+);
 
     // Split the input into 2 sections: A != B
     wire A = in[0];
