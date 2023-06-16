@@ -38,7 +38,7 @@ module p_bit (
 
     // Apply the bit shift to A according to the value of BS
     wire [3:0] shifted_A;
-    always @(*) begin
+    always @(posedge clk) begin
         case (bit_shift)
             2'b00: shifted_A = input_val;
             2'b01: shifted_A = input_val >> 1;
@@ -49,7 +49,7 @@ module p_bit (
     end
 
     // Compare the shifted value of A with R and assign the result to out
-    always @(*) begin
+    always @(negedge clk) begin
         out = (shifted_A < rng_val) ? 1'b1 : 1'b0;
     end
 
