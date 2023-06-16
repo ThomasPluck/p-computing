@@ -42,8 +42,8 @@ module p_bit (
         case (bit_shift)
             2'b00: shifted_A = input_val;
             2'b01: shifted_A = input_val >>> 1;
-            2'b10: shifted_A = input_val << 1;
-            2'b11: shifted_A = input_val << 2;
+            2'b10: shifted_A = input_val <<< 1;
+            2'b11: shifted_A = input_val <<< 2;
             default: shifted_A = 4'b0;
         endcase
     end
