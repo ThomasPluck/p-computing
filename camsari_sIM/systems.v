@@ -8,9 +8,9 @@ module AND_system(
     input c_node,
 );
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] C_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] C_act;
 
     p_bit A_bit (
         .clk(clk[0]),
@@ -33,7 +33,7 @@ module AND_system(
         .C_act(C_act)
     );
 
-    wire [3:0] C_act_2;
+    wire signed [3:0] C_act_2;
 
     unsafe_gate_fusion fusion (
         .in({C_act, c_node}),
@@ -63,15 +63,15 @@ module HA_system(
     input s_node,
 );
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] S_act;
-    wire [3:0] C_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] S_act;
+    wire signed [3:0] C_act;
 
-    wire [3:0] A_act_2;
-    wire [3:0] B_act_2;
-    wire [3:0] S_act_2;
-    wire [3:0] C_act_2;
+    wire signed [3:0] A_act_2;
+    wire signed [3:0] B_act_2;
+    wire signed [3:0] S_act_2;
+    wire signed [3:0] C_act_2;
 
     p_HA_gate HA (
         .in({A, B, S, C}),
@@ -147,17 +147,17 @@ module FA_system(
     input cout_node,
 );
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] Cin_act;
-    wire [3:0] S_act;
-    wire [3:0] Cout_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] Cin_act;
+    wire signed [3:0] S_act;
+    wire signed [3:0] Cout_act;
 
-    wire [3:0] A_act_2;
-    wire [3:0] B_act_2;
-    wire [3:0] Cin_act_2;
-    wire [3:0] S_act_2;
-    wire [3:0] Cout_act_2;
+    wire signed [3:0] A_act_2;
+    wire signed [3:0] B_act_2;
+    wire signed [3:0] Cin_act_2;
+    wire signed [3:0] S_act_2;
+    wire signed [3:0] Cout_act_2;
 
     p_FA_gate FA (
         .in({A, B, Cin, S, Cout}),
@@ -239,9 +239,9 @@ module terminal_AND_system(
     output C,
 )
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] C_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] C_act;
 
     p_bit A_bit (
         .clk(clk[0]),
@@ -286,14 +286,14 @@ module terminal_HA_system(
     input c_node,
 )
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] S_act;
-    wire [3:0] C_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] S_act;
+    wire signed [3:0] C_act;
 
-    wire [3:0] A_act_2;
-    wire [3:0] B_act_2;
-    wire [3:0] C_act_2;
+    wire signed [3:0] A_act_2;
+    wire signed [3:0] B_act_2;
+    wire signed [3:0] C_act_2;
 
     p_HA_gate HA (
         .in({A, B, S, C}),
@@ -363,16 +363,16 @@ module terminal_FA_system(
     input cout_node,
 )
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] Cin_act;
-    wire [3:0] S_act;
-    wire [3:0] Cout_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] Cin_act;
+    wire signed [3:0] S_act;
+    wire signed [3:0] Cout_act;
 
-    wire [3:0] A_act_2;
-    wire [3:0] B_act_2;
-    wire [3:0] Cin_act_2;
-    wire [3:0] Cout_act_2;
+    wire signed [3:0] A_act_2;
+    wire signed [3:0] B_act_2;
+    wire signed [3:0] Cin_act_2;
+    wire signed [3:0] Cout_act_2;
 
     p_FA_gate FA (
         .in({A, B, Cin, S, Cout}),
@@ -454,15 +454,15 @@ module corner_FA_system(
     input cin_node,
 )
 
-    wire [3:0] A_act;
-    wire [3:0] B_act;
-    wire [3:0] Cin_act;
-    wire [3:0] S_act;
-    wire [3:0] Cout_act;
+    wire signed [3:0] A_act;
+    wire signed [3:0] B_act;
+    wire signed [3:0] Cin_act;
+    wire signed [3:0] S_act;
+    wire signed [3:0] Cout_act;
 
-    wire [3:0] A_act_2;
-    wire [3:0] B_act_2;
-    wire [3:0] Cin_act_2;
+    wire signed [3:0] A_act_2;
+    wire signed [3:0] B_act_2;
+    wire signed [3:0] Cin_act_2;
 
     p_FA_gate FA (
         .in({A, B, Cin, S, Cout}),
