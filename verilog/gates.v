@@ -1,3 +1,7 @@
+// Takes an activation and adds a p-bit to it
+// used to mimic the action of a COPY-gate
+
+// Unsafe because it will overflow
 module unsafe_gate_fusion(
     input signed [3:0] A_act,
     input b_node,
@@ -13,6 +17,7 @@ module unsafe_gate_fusion(
 
 endmodule
 
+// Safe because it will saturate
 module safe_gate_fusion(
     input signed [3:0] A_act,
     input b_node,
@@ -21,6 +26,7 @@ module safe_gate_fusion(
 
     wire signed [1:0] B_act = 2*b_node - 1;
 
+    // This is the safe part
     always @(*) begin
         out = (A_act + b_node) > 7 ? 7 : (A_act + b_node) < -8 ? -8 : (A_act + b_node);
     end
@@ -33,7 +39,7 @@ module COPY_gate(
     output signed [3:0] B_act
 );
 
-    // Split the input into 2 sections: A --> B
+    // Split the input into 2 sections: A, B
     wire signed A = 2*in[0] - 1;
     wire signed B = 2*in[1] - 1;
 
@@ -72,7 +78,7 @@ module p_AND_gate(
     output signed [3:0] C_act
 );
 
-    // Split the input into 3 sections: A & B == C
+    // Create signed input
     wire signed [1:0] A = 2*in[0] - 1;
     wire signed [1:0] B = 2*in[1] - 1;
     wire signed [1:0] C = 2*in[2] - 1;
@@ -94,7 +100,7 @@ module p_OR_gate(
     output signed [3:0] C_act
 );
 
-    // Split the input into 3 sections: A | B == C
+    // Create signed input
     wire signed [1:0] A = 2*in[0] - 1;
     wire signed [1:0] B = 2*in[1] - 1;
     wire signed [1:0] C = 2*in[2] - 1;
@@ -117,7 +123,7 @@ module p_HA_gate(
     output signed [3:0] C_act
 );
 
-    // Split the input into 4 sections: A + B --> S, C
+    // Create signed input
     wire signed [1:0] A = 2*in[0] - 1;
     wire signed [1:0] B = 2*in[1] - 1;
     wire signed [1:0] S = 2*in[2] - 1;
@@ -143,7 +149,7 @@ module p_FA_gate(
     output signed [3:0] Cout_act
 );
 
-    // Split the input into 6 sections: A + B + Cin --> S, Cout
+    // Create signed input
     wire signed [1:0] A = 2*in[0] - 1;
     wire signed [1:0] B = 2*in[1] - 1;
     wire signed [1:0] Cin = 2*in[2] - 1;

@@ -20,28 +20,28 @@ endmodule
 module p_bit (
     input clk,
     input reset,
-    input [5:0] in,
+    input signed [3:0] input_val,
+    input [1:0] bit_shift,
     output wire out
 );
 
-    // Split the input into 2 sections: activation (A), bit shift (BS)
-    wire [3:0] input_val = in[5:2];
-    wire [1:0] bit_shift = in[1:0];
-
     // Instantiate the lfsr5_galois module
-    wire [4:0] rng_val;
+    wire [4:0] lfsr;
     lfsr5_galois lfsr_inst (
         .clk(clk),
         .reset(reset),
-        .lfsr(rng_val)
+        .lfsr(lfsr)
     );
 
+    // Use only the 4 least significant bits of the LFSR for rng_val
+    wire signed [3:0] rng_val = lfsr[3:0];
+
     // Apply the bit shift to A according to the value of BS
-    wire [3:0] shifted_A;
+    wire signed [3:0] shifted_A;
     always @(posedge clk) begin
         case (bit_shift)
             2'b00: shifted_A = input_val;
-            2'b01: shifted_A = input_val >> 1;
+            2'b01: shifted_A = input_val >>> 1;
             2'b10: shifted_A = input_val << 1;
             2'b11: shifted_A = input_val << 2;
             default: shifted_A = 4'b0;

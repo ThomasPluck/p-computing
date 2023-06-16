@@ -35,7 +35,7 @@ module AND_system(
 
     wire [3:0] C_act_2;
 
-    gate_fusion fusion (
+    unsafe_gate_fusion fusion (
         .in({C_act, c_node}),
         .out(C_act_2)
     );
@@ -81,22 +81,22 @@ module HA_system(
         .C_act(C_act)
     );
 
-    gate_fusion A_fusion (
+    unsafe_gate_fusion A_fusion (
         .in({A_act, a_node}),
         .out(A_act_2)
     );
 
-    gate_fusion B_fusion (
+    unsafe_gate_fusion B_fusion (
         .in({B_act, b_node}),
         .out(B_act_2)
     );
 
-    gate_fusion S_fusion (
+    unsafe_gate_fusion S_fusion (
         .in({S_act, s_node}),
         .out(S_act_2)
     );
 
-    gate_fusion C_fusion (
+    safe_gate_fusion C_fusion (
         .in({C_act, c_node}),
         .out(C_act_2)
     );
@@ -168,27 +168,27 @@ module FA_system(
         .Cout_act(Cout_act)
     );
 
-    gate_fusion A_fusion (
+    unsafe_gate_fusion A_fusion (
         .in({A_act, a_node}),
         .out(A_act_2)
     );
 
-    gate_fusion B_fusion (
+    unsafe_gate_fusion B_fusion (
         .in({B_act, b_node}),
         .out(B_act_2)
     );
 
-    gate_fusion Cin_fusion (
+    unsafe_gate_fusion Cin_fusion (
         .in({Cin_act, cin_node}),
         .out(Cin_act_2)
     );
 
-    gate_fusion S_fusion (
+    unsafe_gate_fusion S_fusion (
         .in({S_act, s_node}),
         .out(S_act_2)
     );
 
-    gate_fusion Cout_fusion (
+    safe_gate_fusion Cout_fusion (
         .in({Cout_act, cout_node}),
         .out(Cout_act_2)
     );
@@ -303,17 +303,17 @@ module terminal_HA_system(
         .C_act(C_act)
     );
 
-    gate_fusion A_fusion (
+    unsafe_gate_fusion A_fusion (
         .in({A_act, a_node}),
         .out(A_act_2)
     );
 
-    gate_fusion B_fusion (
+    unsafe_gate_fusion B_fusion (
         .in({B_act, b_node}),
         .out(B_act_2)
     );
 
-    gate_fusion C_fusion (
+    safe_gate_fusion C_fusion (
         .in({C_act, c_node}),
         .out(C_act_2)
     );
@@ -383,22 +383,22 @@ module terminal_FA_system(
         .Cout_act(Cout_act)
     );
 
-    gate_fusion A_fusion (
+    unsafe_gate_fusion A_fusion (
         .in({A_act, a_node}),
         .out(A_act_2)
     );
 
-    gate_fusion B_fusion (
+    unsafe_gate_fusion B_fusion (
         .in({B_act, b_node}),
         .out(B_act_2)
     );
 
-    gate_fusion Cin_fusion (
+    unsafe_gate_fusion Cin_fusion (
         .in({Cin_act, cin_node}),
         .out(Cin_act_2)
     );
 
-    gate_fusion Cout_fusion (
+    safe_gate_fusion Cout_fusion (
         .in({Cout_act, cout_node}),
         .out(Cout_act_2)
     );
@@ -473,17 +473,17 @@ module corner_FA_system(
         .Cout_act(Cout_act)
     );
 
-    gate_fusion A_fusion (
+    unsafe_gate_fusion A_fusion (
         .in({A_act, a_node}),
         .out(A_act_2)
     );
 
-    gate_fusion B_fusion (
+    unsafe_gate_fusion B_fusion (
         .in({B_act, b_node}),
         .out(B_act_2)
     );
 
-    gate_fusion Cin_fusion (
+    unsafe_gate_fusion Cin_fusion (
         .in({Cin_act, cin_node}),
         .out(Cin_act_2)
     );
