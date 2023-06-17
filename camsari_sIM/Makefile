@@ -1,19 +1,17 @@
 # Makefile
 
-# Specify the simulator to use
-SIM=icarus
+# defaults
+SIM ?= icarus
+TOPLEVEL_LANG ?= verilog
 
-# Specify the Verilog source files
-VERILOG_SOURCES=$(PWD)/pbit.v
+VERILOG_SOURCES += $(PWD)/pbit.v
+# use VHDL_SOURCES for VHDL files
 
-# Include cocotb's make rules
+# TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
+TOPLEVEL = p_bit
+
+# MODULE is the basename of the Python test file
+MODULE = verification
+
+# include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
-
-# Add a rule for the p_bit module
-test_p_bit:
-    MODULE=verification TOPLEVEL=p_bit $(MAKE) sim
-
-# Add a rule to run all tests
-all: test_p_bit
-
-.PHONY: all test_p_bit
