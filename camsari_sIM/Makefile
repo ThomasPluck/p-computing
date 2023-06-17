@@ -8,7 +8,7 @@ VERILOG_SOURCES += $(PWD)/pbit.v
 # use VHDL_SOURCES for VHDL files
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-TOPLEVEL = p_bit
+TOPLEVEL = tb_p_bit
 
 # MODULE is the basename of the Python test file
 MODULE = verification
