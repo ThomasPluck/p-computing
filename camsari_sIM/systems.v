@@ -1,11 +1,15 @@
+`include "pbit.v"
+`include "gates.v"
+
 module AND_system(
     input [2:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output C,
-    input c_node,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout C,
+    input c_node
 );
 
     wire signed [3:0] A_act;
@@ -15,14 +19,14 @@ module AND_system(
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act),
+        .input_val(A_act),
         .out(A)
     );
     
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act),
+        .input_val(B_act),
         .out(B)
     );
 
@@ -36,14 +40,15 @@ module AND_system(
     wire signed [3:0] C_act_2;
 
     unsafe_gate_fusion fusion (
-        .in({C_act, c_node}),
+        .A_act(C_act),
+        .b_node(c_node),
         .out(C_act_2)
     );
 
     p_bit C_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(C_act_2),
+        .input_val(C_act_2),
         .out(C)
     );
     
@@ -52,15 +57,17 @@ endmodule
 module HA_system(
     input [3:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output S,
-    output C,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout S,
+    inout C,
+
     input a_node,
     input b_node,
     input c_node,
-    input s_node,
+    input s_node
 );
 
     wire signed [3:0] A_act;
@@ -82,69 +89,75 @@ module HA_system(
     );
 
     unsafe_gate_fusion A_fusion (
-        .in({A_act, a_node}),
+        .A_act(A_act),
+        .b_node(a_node),
         .out(A_act_2)
     );
 
     unsafe_gate_fusion B_fusion (
-        .in({B_act, b_node}),
+        .A_act(B_act),
+        .b_node(b_node),
         .out(B_act_2)
     );
 
     unsafe_gate_fusion S_fusion (
-        .in({S_act, s_node}),
+        .A_act(S_act),
+        .b_node(s_node),
         .out(S_act_2)
     );
 
     safe_gate_fusion C_fusion (
-        .in({C_act, c_node}),
+        .A_act(C_act),
+        .b_node(c_node),
         .out(C_act_2)
     );
 
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act_2),
+        .input_val(A_act_2),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act_2),
+        .input_val(B_act_2),
         .out(B)
     );
 
     p_bit S_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(S_act_2),
+        .input_val(S_act_2),
         .out(S)
     );
 
     p_bit C_bit (
         .clk(clk[3]),
         .reset(reset),
-        .in(C_act_2),
+        .input_val(C_act_2),
         .out(C)
     );
     
 endmodule
 
 module FA_system(
-    input clk [4:0],
+    input [4:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output Cin,
-    output S,
-    output Cout,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout Cin,
+    inout S,
+    inout Cout,
+
     input a_node,
     input b_node,
     input cin_node,
     input s_node,
-    input cout_node,
+    input cout_node
 );
 
     wire signed [3:0] A_act;
@@ -169,62 +182,67 @@ module FA_system(
     );
 
     unsafe_gate_fusion A_fusion (
-        .in({A_act, a_node}),
+        .A_act(A_act),
+        .b_node(a_node),
         .out(A_act_2)
     );
 
     unsafe_gate_fusion B_fusion (
-        .in({B_act, b_node}),
+        .A_act(B_act),
+        .b_node(b_node),
         .out(B_act_2)
     );
 
     unsafe_gate_fusion Cin_fusion (
-        .in({Cin_act, cin_node}),
+        .A_act(Cin_act),
+        .b_node(cin_node),
         .out(Cin_act_2)
     );
 
     unsafe_gate_fusion S_fusion (
-        .in({S_act, s_node}),
+        .A_act(S_act),
+        .b_node(s_node),
         .out(S_act_2)
     );
 
     safe_gate_fusion Cout_fusion (
-        .in({Cout_act, cout_node}),
+        .A_act(Cout_act),
+        .b_node(cout_node),
         .out(Cout_act_2)
     );
 
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act_2),
+        .input_val(A_act_2),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act_2),
+        .input_val(B_act_2),
         .out(B)
     );
 
     p_bit Cin_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(Cin_act_2),
+        .input_val(Cin_act_2),
         .out(Cin)
     );
 
     p_bit S_bit (
         .clk(clk[3]),
         .reset(reset),
-        .in(S_act_2),
+        .input_val(S_act_2),
         .out(S)
     );
 
     p_bit Cout_bit (
         .clk(clk[4]),
         .reset(reset),
-        .in(Cout_act_2),
+        .input_val(Cout_act_2),
         .out(Cout)
     );
 
@@ -233,11 +251,12 @@ endmodule
 module terminal_AND_system(
     input [2:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output C,
-)
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout C
+);
 
     wire signed [3:0] A_act;
     wire signed [3:0] B_act;
@@ -246,21 +265,21 @@ module terminal_AND_system(
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act),
+        .input_val(A_act),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act),
+        .input_val(B_act),
         .out(B)
     );
 
     p_bit C_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(C_act),
+        .input_val(C_act),
         .out(C)
     );
 
@@ -276,15 +295,16 @@ endmodule
 module terminal_HA_system(
     input [3:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output S,
-    output C,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout S,
+    inout C,
     input a_node,
     input b_node,
-    input c_node,
-)
+    input c_node
+);
 
     wire signed [3:0] A_act;
     wire signed [3:0] B_act;
@@ -304,64 +324,68 @@ module terminal_HA_system(
     );
 
     unsafe_gate_fusion A_fusion (
-        .in({A_act, a_node}),
+        .A_act(A_act),
+        .b_node(a_node),
         .out(A_act_2)
     );
 
     unsafe_gate_fusion B_fusion (
-        .in({B_act, b_node}),
+        .A_act(B_act),
+        .b_node(b_node),
         .out(B_act_2)
     );
 
     safe_gate_fusion C_fusion (
-        .in({C_act, c_node}),
+        .A_act(C_act),
+        .b_node(c_node),
         .out(C_act_2)
     );
 
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act_2),
+        .input_val(A_act_2),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act_2),
+        .input_val(B_act_2),
         .out(B)
     );
 
     p_bit S_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(S_act),
+        .input_val(S_act),
         .out(S)
     );
 
     p_bit C_bit (
         .clk(clk[3]),
         .reset(reset),
-        .in(C_act_2),
+        .input_val(C_act_2),
         .out(C)
     );
 
 endmodule
 
 module terminal_FA_system(
-    input clk [4:0],
+    input [4:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output Cin,
-    output S,
-    output Cout,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout Cin,
+    inout S,
+    inout Cout,
     input a_node,
     input b_node,
     input cin_node,
-    input cout_node,
-)
+    input cout_node
+);
 
     wire signed [3:0] A_act;
     wire signed [3:0] B_act;
@@ -384,75 +408,80 @@ module terminal_FA_system(
     );
 
     unsafe_gate_fusion A_fusion (
-        .in({A_act, a_node}),
+        .A_act(A_act),
+        .b_node(a_node),
         .out(A_act_2)
     );
 
     unsafe_gate_fusion B_fusion (
-        .in({B_act, b_node}),
+        .A_act(B_act),
+        .b_node(b_node),
         .out(B_act_2)
     );
 
     unsafe_gate_fusion Cin_fusion (
-        .in({Cin_act, cin_node}),
+        .A_act(Cin_act),
+        .b_node(cin_node),
         .out(Cin_act_2)
     );
 
     safe_gate_fusion Cout_fusion (
-        .in({Cout_act, cout_node}),
+        .A_act(Cout_act),
+        .b_node(cout_node),
         .out(Cout_act_2)
     );
 
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act_2),
+        .input_val(A_act_2),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act_2),
+        .input_val(B_act_2),
         .out(B)
     );
 
     p_bit Cin_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(Cin_act_2),
+        .input_val(Cin_act_2),
         .out(Cin)
     );
 
     p_bit S_bit (
         .clk(clk[3]),
         .reset(reset),
-        .in(S_act),
+        .input_val(S_act),
         .out(S)
     );
 
     p_bit Cout_bit (
         .clk(clk[4]),
         .reset(reset),
-        .in(Cout_act_2),
+        .input_val(Cout_act_2),
         .out(Cout)
     );
 
 endmodule
 
 module corner_FA_system(
-    input clk [4:0],
+    input [4:0] clk,
     input reset,
-    input [1:0] bit_shift, // New common bit-shift input
-    output A,
-    output B,
-    output Cin,
-    output S,
-    output Cout,
+    input [1:0] bit_shift,
+
+    inout A,
+    inout B,
+    inout Cin,
+    inout S,
+    inout Cout,
     input a_node,
     input b_node,
-    input cin_node,
-)
+    input cin_node
+);
 
     wire signed [3:0] A_act;
     wire signed [3:0] B_act;
@@ -474,52 +503,55 @@ module corner_FA_system(
     );
 
     unsafe_gate_fusion A_fusion (
-        .in({A_act, a_node}),
+        .A_act(A_act),
+        .b_node(a_node),
         .out(A_act_2)
     );
 
     unsafe_gate_fusion B_fusion (
-        .in({B_act, b_node}),
+        .A_act(B_act),
+        .b_node(b_node),
         .out(B_act_2)
     );
 
     unsafe_gate_fusion Cin_fusion (
-        .in({Cin_act, cin_node}),
+        .A_act(Cin_act),
+        .b_node(cin_node),
         .out(Cin_act_2)
     );
 
     p_bit A_bit (
         .clk(clk[0]),
         .reset(reset),
-        .in(A_act_2),
+        .input_val(A_act_2),
         .out(A)
     );
 
     p_bit B_bit (
         .clk(clk[1]),
         .reset(reset),
-        .in(B_act_2),
+        .input_val(B_act_2),
         .out(B)
     );
 
     p_bit Cin_bit (
         .clk(clk[2]),
         .reset(reset),
-        .in(Cin_act_2),
+        .input_val(Cin_act_2),
         .out(Cin)
     );
 
     p_bit S_bit (
         .clk(clk[3]),
         .reset(reset),
-        .in(S_act),
+        .input_val(S_act),
         .out(S)
     );
 
     p_bit Cout_bit (
         .clk(clk[4]),
         .reset(reset),
-        .in(Cout_act),
+        .input_val(Cout_act),
         .out(Cout)
     );
 

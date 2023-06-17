@@ -36,8 +36,11 @@ module p_bit (
     // Use only the 4 least significant bits of the LFSR for rng_val
     wire signed [3:0] rng_val = lfsr[3:0];
 
+    // Create out register
+    reg out_reg;
+
     // Apply the bit shift to A according to the value of BS
-    wire signed [3:0] shifted_A;
+    reg signed [3:0] shifted_A;
     always @(posedge clk) begin
         case (bit_shift)
             2'b00: shifted_A = input_val;
@@ -50,7 +53,10 @@ module p_bit (
 
     // Compare the shifted value of A with R and assign the result to out
     always @(negedge clk) begin
-        out = (shifted_A < rng_val) ? 1'b1 : 1'b0;
+        out_reg = (shifted_A < rng_val) ? 1'b1 : 1'b0;
     end
+
+    // Assign the output
+    assign out = out_reg;
 
 endmodule
