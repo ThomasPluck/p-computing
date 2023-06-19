@@ -1,4 +1,4 @@
-`include "../systems.v"
+`include "../pbit.v"
 
 `timescale 1ns / 1ps
 
@@ -41,3 +41,4 @@ module tb_p_bit;
     end
 
 endmodule
+

@@ -1,5 +1,5 @@
 import cocotb
-from cocotb.triggers import RisingEdge, FallingEdge
+from cocotb.triggers import RisingEdge, FallingEdge, Timer
 from cocotb.regression import TestFactory
 
 
@@ -47,7 +47,3 @@ async def test_tb_p_bit(dut):
     await RisingEdge(dut.clk)
     assert dut.out.value.integer == 0, "Reset test failed"
     dut.reset = 0
-
-
-factory = TestFactory(test_tb_p_bit)
-factory.generate_tests()
